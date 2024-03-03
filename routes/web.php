@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Route;
  use App\Http\Controllers\Student\StudentController;
  use App\Http\Controllers\Admin\AdminController;
+ use App\Http\Controllers\Admin\CourseController;
  use Illuminate\Support\Facades\Auth; // Add this line
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +32,8 @@ Route::post('/dologin',[StudentController::class,'dologin'])->name('dologin');
 Route::middleware(['auth:student'])->group(function(){
     Route::view('/home','student.home')->name('home');
     Route::post('/logout',[StudentController::class,'logout'])->name('logout');
+    // Route::get('/home', [CourseController::class, 'index'])->name('home');
+    Route::get('/home', [StudentController::class, 'viewCourses'])->name('home'); // Create a new method in StudentController for displaying courses
 });
 });
 
@@ -41,11 +44,18 @@ Route::prefix('admin')->name('admin.')->group(function(){
     Route::middleware(['guest:admin'])->group(function(){
     Route::view('/login','admin.login')->name('login');
     Route::post('/dologin',[AdminController::class,'dologin'])->name('dologin');
+   ;
 
     });
     Route::middleware(['auth:admin'])->group(function(){
         Route::view('/home','admin.home')->name('home');
         Route::post('/logout',[AdminController::class,'logout'])->name('logout');
+        Route::get('/course','Admin\CourseController@index');
+        Route::get('/course', [CourseController::class, 'index'])->name('course');
+        // Route::post('/store', 'Admin\CourseController@store')->name('admin.store');
+        Route::post('/store', [CourseController::class, 'store'])->name('store');
+        Route::get('/home', [StudentController::class, 'showStudentRecords'])->name('home');
+
     });
     });
 

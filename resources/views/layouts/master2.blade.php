@@ -73,13 +73,13 @@
             </a>
           </li> --}}
           <li class="{{ 'home' == request()->path() ? 'active' : '' }}">
-            <a href="/admin/home">
+            <a href="/student/home">
                 <i class="now-ui-icons design_app"></i>
                 <p> Home</p>
             </a>
         </li>
           <li class="{{ 'course' == request()->path() ? 'active' : '' }}">
-            <a href="/admin/course">
+            <a href="/student/course">
                 <i class="now-ui-icons ui-1_bell-53"></i>
                 <p> Course</p>
             </a>
@@ -129,8 +129,8 @@
           </button>
           <div class="collapse navbar-collapse justify-content-end" id="navigation">
 
-            <a href="{{ route('admin.logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">Logout</a>
-            <form id="logout-form" action="{{ route('admin.logout') }}" method="POST">
+            <a href="{{ route('student.logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">Logout</a>
+            <form id="logout-form" action="{{ route('student.logout') }}" method="POST">
                 @csrf
             </form>
 

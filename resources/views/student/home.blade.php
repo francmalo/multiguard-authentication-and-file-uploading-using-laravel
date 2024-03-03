@@ -1,4 +1,4 @@
-
+{{--
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -44,4 +44,74 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 </body>
-</html>
+{{-- </html> --}}
+
+@extends('layouts.master2')
+
+
+@section('title')
+Dashboard Student
+@endsection
+
+
+
+
+@section('content')
+
+
+
+
+
+
+
+
+<div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">COURSES
+
+          </h4>
+
+          @if(session('status'))
+          <div class="alert alert-success" role="alert">
+            {{ session('status') }}
+          @endif
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table">
+              <thead class=" text-primary">
+                <th>ID</th>
+                <th>NAME</th>
+                <th>APPLY</th>
+
+              </thead>
+              <tbody>
+                @foreach ($courses as $data)
+                <tr>
+                  <td>{{ $data->id }}</td>
+                  <td>{{ $data->name }}</td>
+                    <td><a href="#" class="btn btn-success">Apply</a>
+                  </td>
+
+                </tr>
+                @endforeach
+              </tbody>
+
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+@endsection
+
+
+
+@section('scripts')
+
+@endsection
