@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth; // Add this line
 use App\Admin;
+use App\Course;
+use App\CourseApplication;
 
 
 class AdminController extends Controller
@@ -36,6 +38,35 @@ class AdminController extends Controller
         Auth::guard('admin')->logout();
         return redirect('/');
     }
+
+
+
+    public function viewCourseApplications()
+    {
+        $courseApplications = CourseApplication::with(['student', 'course'])->get();
+
+        return view('admin.applications', compact('courseApplications'));
+    }
+
+    public function approveApplication(Request $request)
+    {
+        $applicationId = $request->input('applicationId');
+        $application = CourseApplication::findOrFail($applicationId);
+        $application->status = 'approved';
+        $application->save();
+
+        return redirect()->back()->with('success', 'Application approved successfully');
+    }
+    public function rejectApplication(Request $request)
+{
+    $applicationId = $request->input('applicationId');
+    $application = CourseApplication::findOrFail($applicationId);
+    $application->status = 'rejected';
+    $application->save();
+
+    return redirect()->back()->with('success', 'Application rejected');
+}
+
 
 }
 

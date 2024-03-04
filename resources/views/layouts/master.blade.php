@@ -84,6 +84,12 @@
                 <p> Course</p>
             </a>
         </li>
+        <li class="{{ 'applications' == request()->path() ? 'active' : '' }}">
+            <a href="/admin/applications">
+                <i class="now-ui-icons ui-1_bell-53"></i>
+                <p> Applications</p>
+            </a>
+        </li>
 
 
 

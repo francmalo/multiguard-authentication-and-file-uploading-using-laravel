@@ -19,6 +19,8 @@
 
 <head>
   <meta charset="utf-8" />
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+
   <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -36,6 +38,8 @@
 
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <link href="../assets/demo/demo.css" rel="stylesheet" />
+
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 
 <body class="">
@@ -228,6 +232,44 @@
     </div>
   </div>
   <!--   Core JS Files   -->
+<!-- Include jQuery -->
+
+<script>
+    $(document).ready(function() {
+        $('.applyCourse').on('click', function() {
+            var button = $(this);
+            var courseId = button.data('course-id');
+
+            $.ajax({
+                url: '{{ route("student.applyCourse") }}',
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: { course_id: courseId },
+                success: function(response) {
+                    alert(response.message);
+
+                    // Update the button text and disable it
+                    button.text('Applied').attr('disabled', true);
+
+                    // Optionally, you can add a class for styling purposes
+                    // button.addClass('applied-style');
+
+                    // You may want to handle more sophisticated UI updates based on your design
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        });
+    });
+</script>
+
+
+
+
+
   <script src="../assets/js/core/jquery.min.js"></script>
   <script src="../assets/js/core/popper.min.js"></script>
   <script src="../assets/js/core/bootstrap.min.js"></script>

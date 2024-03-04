@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Student;
 use App\Course;
+use App\CourseApplication;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth; // Add this line
 
@@ -141,6 +142,70 @@ class StudentController extends Controller
 
         return view('admin.home', compact('students'));
     }
+
+
+
+    // public function applyCourse(Request $request)
+    // {
+    //     $studentId = Auth::guard('student')->id();
+    //     $courseId = $request->input('course_id');
+
+    //     $application = CourseApplication::create([
+    //         'student_id' => $studentId,
+    //         'course_id' => $courseId,
+    //     ]);
+
+    //     return response()->json(['message' => 'Application submitted successfully', 'application' => $application]);
+    // }
+
+    public function applyCourse(Request $request)
+    {
+        $studentId = Auth::guard('student')->id();
+        $courseId = $request->input('course_id');
+
+        // Check if the student has already applied for this course
+        if (CourseApplication::where('student_id', $studentId)->where('course_id', $courseId)->exists()) {
+            return response()->json(['message' => 'Already applied for this course']);
+        }
+
+        // If not applied, create a new application
+        $application = CourseApplication::create([
+            'student_id' => $studentId,
+            'course_id' => $courseId,
+            'status' => 'pending',
+        ]);
+
+        return response()->json(['message' => 'Application submitted successfully', 'application' => $application]);
+    }
+
+    public function viewCourseApplication()
+{
+    // Retrieve courses and applications, and pass them to the view
+    $courses = Course::all();
+    $course_applications = CourseApplication::where('student_id', Auth::guard('student')->id())->pluck('course_id')->toArray();
+
+    return view('student.home', compact('courses', 'course_applications'));
+}
+
+
+// public function viewCourse()
+// {
+//     // Retrieve courses and applications, and pass them to the view
+//     $courses = Course::all();
+//     $studentId = Auth::guard('student')->id();
+
+//     // Fetch course applications with their statuses
+//     $courseApplications = CourseApplication::where('student_id', $studentId)->get();
+//     $courseApplicationsData = [];
+
+//     foreach ($courseApplications as $application) {
+//         $courseApplicationsData[$application->course_id] = $application->status;
+//     }
+
+//     return view('student.home', compact('courses', 'courseApplicationsData'));
+// }
+
+
 }
 
 

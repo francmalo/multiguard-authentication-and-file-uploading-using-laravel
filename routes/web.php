@@ -33,7 +33,10 @@ Route::middleware(['auth:student'])->group(function(){
     Route::view('/home','student.home')->name('home');
     Route::post('/logout',[StudentController::class,'logout'])->name('logout');
     // Route::get('/home', [CourseController::class, 'index'])->name('home');
-    Route::get('/home', [StudentController::class, 'viewCourses'])->name('home'); // Create a new method in StudentController for displaying courses
+    Route::get('/home', [StudentController::class, 'viewCourseApplication'])->name('home'); // Create a new method in StudentController for displaying courses
+    // Route::get('/student/home', [StudentController::class, 'viewCourses'])->name('student.home');
+    Route::post('/applyCourse', [StudentController::class, 'applyCourse'])->name('applyCourse');
+
 });
 });
 
@@ -54,7 +57,43 @@ Route::prefix('admin')->name('admin.')->group(function(){
         Route::get('/course', [CourseController::class, 'index'])->name('course');
         // Route::post('/store', 'Admin\CourseController@store')->name('admin.store');
         Route::post('/store', [CourseController::class, 'store'])->name('store');
+
+
+
         Route::get('/home', [StudentController::class, 'showStudentRecords'])->name('home');
+
+        Route::get('/applications', [AdminController::class, 'viewCourseApplications'])
+        ->name('applications');
+
+// web.php
+
+        Route::post('/approveApplication', [AdminController::class, 'approveApplication'])
+    ->name('approveApplication');
+
+        Route::post('/rejectApplication', [AdminController::class, 'rejectApplication'])->name('rejectApplication');
+
+// Route::post('/admin/applications/{applicationId}/approveapplication', [AdminController::class, 'approveApplication'])->name('admin.approveApplication');
+
+// Route::post('/application/{applicationId}/reject', [AdminController::class, 'rejectApplication'])
+//     ->name('admin.rejectApplication');
+
+
+
+
+
+    //     Route::match(['get', 'post'], '/application/{applicationId}/approve', [AdminController::class, 'approveApplication'])
+    //     ->name('admin.approveApplication');
+
+    // Route::match(['get', 'post'], '/application/{applicationId}/reject', [AdminController::class, 'rejectApplication'])
+    //     ->name('admin.rejectApplication');
+
+
+//     Route::post('/application/{applicationId}/approve', [AdminController::class, 'approveApplication'])
+//     ->name('admin.approveApplication');
+
+// Route::post('/application/{applicationId}/reject', [AdminController::class, 'rejectApplication'])
+//     ->name('admin.rejectApplication');
+
 
     });
     });

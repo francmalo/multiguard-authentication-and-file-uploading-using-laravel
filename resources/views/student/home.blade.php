@@ -85,6 +85,7 @@ Dashboard Student
                 <th>ID</th>
                 <th>NAME</th>
                 <th>APPLY</th>
+                <th>STATUS</th>
 
               </thead>
               <tbody>
@@ -92,8 +93,42 @@ Dashboard Student
                 <tr>
                   <td>{{ $data->id }}</td>
                   <td>{{ $data->name }}</td>
-                    <td><a href="#" class="btn btn-success">Apply</a>
-                  </td>
+                    <!-- Add this button in your COURSES table -->
+                {{-- <td>
+                    <button class="btn btn-success applyCourse" data-course-id="{{ $data->id }}">Apply</button>
+                </td> --}}
+
+
+                <td>
+                    @if (in_array($data->id, $course_applications))
+                        <button class="btn btn-success" disabled>Applied</button>
+                    @else
+                        <button class="btn btn-success applyCourse" data-course-id="{{ $data->id }}">Apply</button>
+                    @endif
+                </td>
+                 <td>
+
+
+                    @php
+                    $application = App\CourseApplication::where('student_id', Auth::guard('student')->id())
+                        ->where('course_id', $data->id)
+                        ->first();
+                @endphp
+
+                @if ($application)
+                    @if ($application->status == 'approved')
+                        <span class="text-success">Approved</span>
+                    @elseif ($application->status == 'rejected')
+                        <span class="text-danger">Rejected</span>
+                    @else
+                        <span class="text-warning">Pending</span>
+                    @endif
+                @else
+                    Not Applied
+                @endif
+
+
+                 </td>
 
                 </tr>
                 @endforeach
